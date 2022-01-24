@@ -4,10 +4,12 @@
 #include <unistd.h>
 
 int main(int argc, const char *argv[]) {
+  extern char **environ;
   while(1){
     printf("Welcome to mush. Enter you commands below:\n");
     char *response = (char *) malloc(2048*sizeof(char));
     fgets(response, 128, stdin);
+    if (feof(stdin)) exit(0);
     char* holder[128] = {};
     int i=1;
     int tokenizing=1;
@@ -22,10 +24,7 @@ int main(int argc, const char *argv[]) {
         i+=1;
       }
     }
-    int j=0;
-    while(j<i){
-      printf("%s\n", holder[j]);
-      j+=1;
-    }
+    execvp(holder[0], holder);
+    perror("Error: ");
   }
 }
